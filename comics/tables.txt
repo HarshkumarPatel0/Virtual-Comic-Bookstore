@@ -1,0 +1,1139 @@
+C:\Python37\python.exe C:/course/comics/sqlextract.py 2022-02-01.sql
+Mem used: 31.24 MB
+CREATE TABLE `stddata_country` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `code` varchar(10) NOT NULL,
+2:  `name` varchar(255) NOT NULL,
+) ENGINE=InnoDB AUTO_INCREMENT=278 DEFAULT CHARSET=utf8;
+
+Mem used: 31.27 MB
+CREATE TABLE `stddata_language` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `code` varchar(10) NOT NULL,
+2:  `name` varchar(255) NOT NULL,
+3:  `native_name` varchar(255) NOT NULL,
+) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=utf8;
+
+Mem used: 31.33 MB
+CREATE TABLE `stddata_date` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `year` varchar(4) NOT NULL,
+2:  `month` varchar(2) NOT NULL,
+3:  `day` varchar(2) NOT NULL,
+4:  `year_uncertain` tinyint(1) NOT NULL,
+5:  `month_uncertain` tinyint(1) NOT NULL,
+6:  `day_uncertain` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `stddata_date_b2d73278` (`year`),
+  KEY `stddata_date_7abe03e0` (`month`),
+  KEY `stddata_date_ec444b56` (`day`)
+) ENGINE=InnoDB AUTO_INCREMENT=409709 DEFAULT CHARSET=utf8;
+
+Mem used: 34.52 MB
+CREATE TABLE `stddata_script` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `code` varchar(4) NOT NULL,
+2:  `number` smallint(5) unsigned NOT NULL,
+3:  `name` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code` (`code`),
+  UNIQUE KEY `number` (`number`)
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8;
+
+Mem used: 32.01 MB
+CREATE TABLE `gcd_story_type` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `name` varchar(50) NOT NULL,
+2:  `sort_code` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `sort_code` (`sort_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
+Mem used: 32.01 MB
+CREATE TABLE `gcd_reprint` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `origin_id` int(11) DEFAULT NULL,
+2:  `target_id` int(11) DEFAULT NULL,
+3:  `notes` longtext NOT NULL,
+  `created` datetime(6) NOT NULL,
+  `modified` datetime(6) NOT NULL,
+4:  `origin_issue_id` int(11) NOT NULL,
+5:  `target_issue_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `reprint_from` (`origin_id`),
+  KEY `reprint_to` (`target_id`),
+  KEY `gcd_reprint_modified_b8966555` (`modified`),
+  KEY `gcd_reprint_origin_issue_id_35ba9bf2_fk_gcd_issue_id` (`origin_issue_id`),
+  KEY `gcd_reprint_target_issue_id_c4c7d013_fk_gcd_issue_id` (`target_issue_id`),
+  CONSTRAINT `gcd_reprint_origin_id_48220c89_fk_gcd_story_id` FOREIGN KEY (`origin_id`) REFERENCES `gcd_story` (`id`),
+  CONSTRAINT `gcd_reprint_origin_issue_id_35ba9bf2_fk_gcd_issue_id` FOREIGN KEY (`origin_issue_id`) REFERENCES `gcd_issue` (`id`),
+  CONSTRAINT `gcd_reprint_target_id_44bd71ce_fk_gcd_story_id` FOREIGN KEY (`target_id`) REFERENCES `gcd_story` (`id`),
+  CONSTRAINT `gcd_reprint_target_issue_id_c4c7d013_fk_gcd_issue_id` FOREIGN KEY (`target_issue_id`) REFERENCES `gcd_issue` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1058431 DEFAULT CHARSET=utf8;
+
+Mem used: 33.01 MB
+CREATE TABLE `gcd_brand_emblem_group` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `brand_id` int(11) NOT NULL,
+2:  `brandgroup_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `gcd_brand_emblem_group_brand_id_4dd3b49d7f79dbe3_uniq` (`brand_id`,`brandgroup_id`),
+  KEY `gcd_brand_emblem_group_74876276` (`brand_id`),
+  KEY `gcd_brand_emblem_group_9eac909a` (`brandgroup_id`),
+  CONSTRAINT `brand_id_refs_id_499c2f828021a0a5` FOREIGN KEY (`brand_id`) REFERENCES `gcd_brand` (`id`),
+  CONSTRAINT `brandgroup_id_refs_id_3d239edd15609953` FOREIGN KEY (`brandgroup_id`) REFERENCES `gcd_brand_group` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13441 DEFAULT CHARSET=utf8;
+
+Mem used: 33.01 MB
+CREATE TABLE `gcd_brand_use` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `publisher_id` int(11) NOT NULL,
+2:  `emblem_id` int(11) NOT NULL,
+3:  `year_began` int(11) DEFAULT NULL,
+4:  `year_ended` int(11) DEFAULT NULL,
+5:  `year_began_uncertain` tinyint(1) NOT NULL,
+6:  `year_ended_uncertain` tinyint(1) NOT NULL,
+7:  `notes` longtext NOT NULL,
+  `created` datetime(6) NOT NULL,
+  `modified` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_brand_use_22dd9c39` (`publisher_id`),
+  KEY `gcd_brand_use_7c3d3954` (`emblem_id`),
+  KEY `gcd_brand_use_d4f3f470` (`year_began`),
+  KEY `gcd_brand_use_b5b058a2` (`year_began_uncertain`),
+  KEY `gcd_brand_use_8c53af9d` (`year_ended_uncertain`),
+  KEY `gcd_brand_use_modified_2f953692` (`modified`),
+  CONSTRAINT `emblem_id_refs_id_66e921df4498a093` FOREIGN KEY (`emblem_id`) REFERENCES `gcd_brand` (`id`),
+  CONSTRAINT `publisher_id_refs_id_4bf8142e98fbb94c` FOREIGN KEY (`publisher_id`) REFERENCES `gcd_publisher` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10050 DEFAULT CHARSET=utf8;
+
+Mem used: 33.21 MB
+CREATE TABLE `gcd_series_bond` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `origin_id` int(11) NOT NULL,
+2:  `target_id` int(11) NOT NULL,
+3:  `origin_issue_id` int(11) DEFAULT NULL,
+4:  `target_issue_id` int(11) DEFAULT NULL,
+5:  `bond_type_id` int(11) NOT NULL,
+6:  `notes` longtext NOT NULL,
+7:  `reserved` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_series_bond_bd654448` (`origin_id`),
+  KEY `gcd_series_bond_9358c897` (`target_id`),
+  KEY `gcd_series_bond_22a369b6` (`origin_issue_id`),
+  KEY `gcd_series_bond_b219039` (`target_issue_id`),
+  KEY `gcd_series_bond_1c107711` (`bond_type_id`),
+  KEY `gcd_series_bond_3b2a5c11` (`reserved`),
+  CONSTRAINT `bond_type_id_refs_id_74608925967dca7d` FOREIGN KEY (`bond_type_id`) REFERENCES `gcd_series_bond_type` (`id`),
+  CONSTRAINT `origin_id_refs_id_2e5ee5bcc36327a6` FOREIGN KEY (`origin_id`) REFERENCES `gcd_series` (`id`),
+  CONSTRAINT `origin_issue_id_refs_id_14846e21180392d7` FOREIGN KEY (`origin_issue_id`) REFERENCES `gcd_issue` (`id`),
+  CONSTRAINT `target_id_refs_id_2e5ee5bcc36327a6` FOREIGN KEY (`target_id`) REFERENCES `gcd_series` (`id`),
+  CONSTRAINT `target_issue_id_refs_id_14846e21180392d7` FOREIGN KEY (`target_issue_id`) REFERENCES `gcd_issue` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5726 DEFAULT CHARSET=utf8;
+
+Mem used: 33.42 MB
+CREATE TABLE `gcd_series_bond_type` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `name` varchar(255) NOT NULL,
+2:  `description` longtext NOT NULL,
+3:  `notes` longtext NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_series_bond_type_52094d6e` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+Mem used: 33.17 MB
+CREATE TABLE `gcd_series_publication_type` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `name` varchar(255) NOT NULL,
+2:  `notes` longtext NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_series_publication_type_52094d6e` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+Mem used: 33.17 MB
+CREATE TABLE `taggit_tag` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `name` varchar(100) NOT NULL,
+2:  `slug` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=InnoDB AUTO_INCREMENT=92115 DEFAULT CHARSET=utf8;
+
+Mem used: 33.45 MB
+CREATE TABLE `taggit_taggeditem` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `tag_id` int(11) NOT NULL,
+2:  `object_id` int(11) NOT NULL,
+3:  `content_type_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `taggit_taggeditem_content_type_id_object_id_tag_id_4bb97a8e_uniq` (`content_type_id`,`object_id`,`tag_id`),
+  KEY `taggit_taggeditem_3747b463` (`tag_id`),
+  KEY `taggit_taggeditem_829e37fd` (`object_id`),
+  KEY `taggit_taggeditem_e4470c6e` (`content_type_id`),
+  KEY `taggit_taggeditem_content_type_id_3c99b32018cc9d40_idx` (`content_type_id`,`object_id`),
+  CONSTRAINT `taggit_taggeditem_ibfk_1` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
+  CONSTRAINT `taggit_taggeditem_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `taggit_tag` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=821737 DEFAULT CHARSET=utf8;
+
+Mem used: 35.67 MB
+CREATE TABLE `django_content_type` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `app_label` varchar(100) NOT NULL,
+2:  `model` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `app_label` (`app_label`,`model`)
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8;
+
+Mem used: 33.92 MB
+CREATE TABLE `gcd_name_type` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `description` longtext NOT NULL,
+2:  `type` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+Mem used: 33.92 MB
+CREATE TABLE `gcd_relation_type` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `type` varchar(50) NOT NULL,
+2:  `reverse_type` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+Mem used: 33.92 MB
+CREATE TABLE `gcd_school` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `school_name` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=886 DEFAULT CHARSET=utf8;
+
+Mem used: 34.08 MB
+CREATE TABLE `gcd_degree` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `degree_name` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+Mem used: 34.08 MB
+CREATE TABLE `gcd_membership_type` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `type` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+Mem used: 34.08 MB
+CREATE TABLE `gcd_non_comic_work_role` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `role_name` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+Mem used: 34.08 MB
+CREATE TABLE `gcd_non_comic_work_type` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `type` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+Mem used: 34.08 MB
+CREATE TABLE `gcd_non_comic_work_year` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `work_year` smallint(5) unsigned DEFAULT NULL,
+2:  `work_year_uncertain` tinyint(1) NOT NULL,
+3:  `non_comic_work_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_non_comic_work_year_3bb39492` (`non_comic_work_id`),
+  CONSTRAINT `D0189e80e31281a6ea56ca3b1b0c7cde` FOREIGN KEY (`non_comic_work_id`) REFERENCES `gcd_creator_non_comic_work` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5211 DEFAULT CHARSET=utf8;
+
+Mem used: 34.09 MB
+CREATE TABLE `gcd_feature_type` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_feature_type_name_af6c2592` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+Mem used: 34.09 MB
+CREATE TABLE `gcd_feature_relation_type` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `name` varchar(255) NOT NULL,
+2:  `description` varchar(255) NOT NULL,
+3:  `reverse_description` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_feature_relation_type_name_5eb55141` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+Mem used: 34.09 MB
+CREATE TABLE `gcd_feature_logo_2_feature` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `featurelogo_id` int(11) NOT NULL,
+2:  `feature_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `gcd_feature_logo_2_featu_featurelogo_id_feature_i_26489bce_uniq` (`featurelogo_id`,`feature_id`),
+  KEY `gcd_feature_logo_2_feature_feature_id_8ec96fc1_fk_gcd_feature_id` (`feature_id`),
+  CONSTRAINT `gcd_feature_logo_2_f_featurelogo_id_3e696cd6_fk_gcd_featu` FOREIGN KEY (`featurelogo_id`) REFERENCES `gcd_feature_logo` (`id`),
+  CONSTRAINT `gcd_feature_logo_2_feature_feature_id_8ec96fc1_fk_gcd_feature_id` FOREIGN KEY (`feature_id`) REFERENCES `gcd_feature` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3929 DEFAULT CHARSET=utf8;
+
+Mem used: 34.09 MB
+CREATE TABLE `gcd_credit_type` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `name` varchar(50) NOT NULL,
+2:  `sort_code` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `sort_code` (`sort_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+
+Mem used: 34.09 MB
+CREATE TABLE `gcd_story_feature_logo` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `story_id` int(11) NOT NULL,
+2:  `featurelogo_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `gcd_story_feature_logo_story_id_featurelogo_id_5a345f8c_uniq` (`story_id`,`featurelogo_id`),
+  KEY `gcd_story_feature_lo_featurelogo_id_169a1ec3_fk_gcd_featu` (`featurelogo_id`),
+  CONSTRAINT `gcd_story_feature_lo_featurelogo_id_169a1ec3_fk_gcd_featu` FOREIGN KEY (`featurelogo_id`) REFERENCES `gcd_feature_logo` (`id`),
+  CONSTRAINT `gcd_story_feature_logo_story_id_41377b84_fk_gcd_story_id` FOREIGN KEY (`story_id`) REFERENCES `gcd_story` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31215 DEFAULT CHARSET=utf8;
+
+Mem used: 34.15 MB
+CREATE TABLE `gcd_story_feature_object` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `story_id` int(11) NOT NULL,
+2:  `feature_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `gcd_story_feature_object_story_id_feature_id_e2de9a4d_uniq` (`story_id`,`feature_id`),
+  KEY `gcd_story_feature_object_feature_id_fea4dbf9_fk_gcd_feature_id` (`feature_id`),
+  CONSTRAINT `gcd_story_feature_object_feature_id_fea4dbf9_fk_gcd_feature_id` FOREIGN KEY (`feature_id`) REFERENCES `gcd_feature` (`id`),
+  CONSTRAINT `gcd_story_feature_object_story_id_0393a434_fk_gcd_story_id` FOREIGN KEY (`story_id`) REFERENCES `gcd_story` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=658276 DEFAULT CHARSET=utf8;
+
+Mem used: 35.75 MB
+CREATE TABLE `gcd_biblio_entry` (
+0:  `story_ptr_id` int(11) NOT NULL,
+1:  `page_began` int(11) DEFAULT NULL,
+2:  `page_ended` int(11) DEFAULT NULL,
+3:  `abstract` longtext NOT NULL,
+4:  `doi` longtext NOT NULL,
+  PRIMARY KEY (`story_ptr_id`),
+  CONSTRAINT `gcd_biblio_entry_story_ptr_id_d8f3d929_fk_gcd_story_id` FOREIGN KEY (`story_ptr_id`) REFERENCES `gcd_story` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+Mem used: 33.87 MB
+CREATE TABLE `gcd_creator_relation_creator_name` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `creatorrelation_id` int(11) NOT NULL,
+2:  `creatornamedetail_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `gcd_creator_relation_cre_creatorrelation_id_creat_953af27b_uniq` (`creatorrelation_id`,`creatornamedetail_id`),
+  KEY `gcd_creator_relation_creatornamedetail_id_4675e7fc_fk_gcd_creat` (`creatornamedetail_id`),
+  CONSTRAINT `gcd_creator_relation_creatornamedetail_id_4675e7fc_fk_gcd_creat` FOREIGN KEY (`creatornamedetail_id`) REFERENCES `gcd_creator_name_detail` (`id`),
+  CONSTRAINT `gcd_creator_relation_creatorrelation_id_d48c32dc_fk_gcd_creat` FOREIGN KEY (`creatorrelation_id`) REFERENCES `gcd_creator_relation` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=175 DEFAULT CHARSET=utf8;
+
+Mem used: 33.75 MB
+CREATE TABLE `gcd_creator_signature` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created` datetime(6) NOT NULL,
+  `modified` datetime(6) NOT NULL,
+1:  `deleted` tinyint(1) NOT NULL,
+2:  `name` varchar(255) NOT NULL,
+3:  `notes` longtext NOT NULL,
+4:  `generic` tinyint(1) NOT NULL,
+5:  `creator_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_creator_signature_creator_id_063b6789_fk_gcd_creator_id` (`creator_id`),
+  KEY `gcd_creator_signature_modified_064658ce` (`modified`),
+  KEY `gcd_creator_signature_deleted_2e7249b9` (`deleted`),
+  KEY `gcd_creator_signature_name_91dfd0cc` (`name`),
+  CONSTRAINT `gcd_creator_signature_creator_id_063b6789_fk_gcd_creator_id` FOREIGN KEY (`creator_id`) REFERENCES `gcd_creator` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16019 DEFAULT CHARSET=utf8;
+
+Mem used: 33.84 MB
+CREATE TABLE `gcd_feature_relation` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created` datetime(6) NOT NULL,
+  `modified` datetime(6) NOT NULL,
+1:  `notes` longtext NOT NULL,
+2:  `from_feature_id` int(11) NOT NULL,
+3:  `relation_type_id` int(11) NOT NULL,
+4:  `to_feature_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_feature_relation_from_feature_id_25e36fdf_fk_gcd_feature_id` (`from_feature_id`),
+  KEY `gcd_feature_relation_modified_896fb6c6` (`modified`),
+  KEY `gcd_feature_relation_relation_type_id_09ba4ac7_fk_gcd_featu` (`relation_type_id`),
+  KEY `gcd_feature_relation_to_feature_id_e5a20bdf_fk_gcd_feature_id` (`to_feature_id`),
+  CONSTRAINT `gcd_feature_relation_from_feature_id_25e36fdf_fk_gcd_feature_id` FOREIGN KEY (`from_feature_id`) REFERENCES `gcd_feature` (`id`),
+  CONSTRAINT `gcd_feature_relation_relation_type_id_09ba4ac7_fk_gcd_featu` FOREIGN KEY (`relation_type_id`) REFERENCES `gcd_feature_relation_type` (`id`),
+  CONSTRAINT `gcd_feature_relation_to_feature_id_e5a20bdf_fk_gcd_feature_id` FOREIGN KEY (`to_feature_id`) REFERENCES `gcd_feature` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5925 DEFAULT CHARSET=utf8;
+
+Mem used: 34.12 MB
+CREATE TABLE `gcd_issue_indicia_printer` (
+1:  `id` int(11) NOT NULL AUTO_INCREMENT,
+2:  `issue_id` int(11) NOT NULL,
+3:  `indiciaprinter_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `gcd_issue_indicia_printe_issue_id_indiciaprinter__f9448194_uniq` (`issue_id`,`indiciaprinter_id`),
+  KEY `gcd_issue_indicia_pr_indiciaprinter_id_c0f3b842_fk_gcd_indic` (`indiciaprinter_id`),
+  CONSTRAINT `gcd_issue_indicia_pr_indiciaprinter_id_c0f3b842_fk_gcd_indic` FOREIGN KEY (`indiciaprinter_id`) REFERENCES `gcd_indicia_printer` (`id`),
+  CONSTRAINT `gcd_issue_indicia_printer_issue_id_2965892e_fk_gcd_issue_id` FOREIGN KEY (`issue_id`) REFERENCES `gcd_issue` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25794 DEFAULT CHARSET=utf8;
+
+Mem used: 34.18 MB
+CREATE TABLE `gcd_publisher` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `name` varchar(255) NOT NULL,
+2:  `country_id` int(11) NOT NULL,
+3:  `year_began` int(11) DEFAULT NULL,
+4:  `year_ended` int(11) DEFAULT NULL,
+5:  `notes` longtext NOT NULL,
+6:  `url` varchar(255) NOT NULL,
+7:  `brand_count` int(11) NOT NULL DEFAULT '0',
+8:  `indicia_publisher_count` int(11) NOT NULL DEFAULT '0',
+9:  `series_count` int(11) NOT NULL DEFAULT '0',
+  `created` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
+  `modified` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
+10:  `issue_count` int(11) NOT NULL DEFAULT '0',
+11:  `deleted` tinyint(1) NOT NULL DEFAULT '0',
+12:  `year_began_uncertain` tinyint(1) NOT NULL DEFAULT '0',
+13:  `year_ended_uncertain` tinyint(1) NOT NULL DEFAULT '0',
+14:  `year_overall_began` int(11) DEFAULT NULL,
+15:  `year_overall_began_uncertain` tinyint(1) NOT NULL,
+16:  `year_overall_ended` int(11) DEFAULT NULL,
+17:  `year_overall_ended_uncertain` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `PubName` (`name`),
+  KEY `YearBegan` (`year_began`),
+  KEY `country_id` (`country_id`),
+  KEY `brand_count` (`brand_count`),
+  KEY `indicia_publisher_count` (`indicia_publisher_count`),
+  KEY `deleted` (`deleted`),
+  KEY `year_began_uncertain` (`year_began_uncertain`),
+  KEY `year_ended_uncertain` (`year_ended_uncertain`),
+  KEY `gcd_publisher_modified_4da24f236c8f04fe_uniq` (`modified`),
+  KEY `gcd_publisher_year_overall_began_281cdf77` (`year_overall_began`),
+  KEY `gcd_publisher_year_overall_began_uncertain_7213c847` (`year_overall_began_uncertain`),
+  KEY `gcd_publisher_year_overall_ended_uncertain_e155ab76` (`year_overall_ended_uncertain`),
+  CONSTRAINT `gcd_publisher_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `stddata_country` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16503 DEFAULT CHARSET=utf8;
+
+Mem used: 34.68 MB
+CREATE TABLE `gcd_brand_group` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `name` varchar(255) NOT NULL,
+2:  `year_began` int(11) DEFAULT NULL,
+3:  `year_ended` int(11) DEFAULT NULL,
+4:  `year_began_uncertain` tinyint(1) NOT NULL,
+5:  `year_ended_uncertain` tinyint(1) NOT NULL,
+6:  `notes` longtext NOT NULL,
+7:  `url` varchar(255) NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+8:  `deleted` tinyint(1) NOT NULL,
+9:  `parent_id` int(11) NOT NULL,
+10:  `issue_count` int(11) NOT NULL,
+11:  `year_overall_began` int(11) DEFAULT NULL,
+12:  `year_overall_began_uncertain` tinyint(1) NOT NULL,
+13:  `year_overall_ended` int(11) DEFAULT NULL,
+14:  `year_overall_ended_uncertain` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_brand_group_52094d6e` (`name`),
+  KEY `gcd_brand_group_d4f3f470` (`year_began`),
+  KEY `gcd_brand_group_b5b058a2` (`year_began_uncertain`),
+  KEY `gcd_brand_group_8c53af9d` (`year_ended_uncertain`),
+  KEY `gcd_brand_group_6cc99b0b` (`deleted`),
+  KEY `gcd_brand_group_63f17a16` (`parent_id`),
+  KEY `gcd_brand_group_modified_2a3c89f27446d469_uniq` (`modified`),
+  KEY `gcd_brand_group_year_overall_began_146c13e6` (`year_overall_began`),
+  KEY `gcd_brand_group_year_overall_began_uncertain_04003dcc` (`year_overall_began_uncertain`),
+  KEY `gcd_brand_group_year_overall_ended_uncertain_099d9624` (`year_overall_ended_uncertain`),
+  CONSTRAINT `parent_id_refs_id_37eff265bd014aa2` FOREIGN KEY (`parent_id`) REFERENCES `gcd_publisher` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8126 DEFAULT CHARSET=utf8;
+
+Mem used: 34.74 MB
+CREATE TABLE `gcd_brand` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `name` varchar(255) NOT NULL,
+2:  `year_began` int(11) DEFAULT NULL,
+3:  `year_ended` int(11) DEFAULT NULL,
+4:  `notes` longtext NOT NULL,
+5:  `url` varchar(255) NOT NULL,
+6:  `issue_count` int(11) NOT NULL DEFAULT '0',
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+7:  `deleted` tinyint(1) NOT NULL DEFAULT '0',
+8:  `year_began_uncertain` tinyint(1) NOT NULL DEFAULT '0',
+9:  `year_ended_uncertain` tinyint(1) NOT NULL DEFAULT '0',
+10:  `year_overall_began` int(11) DEFAULT NULL,
+11:  `year_overall_began_uncertain` tinyint(1) NOT NULL,
+12:  `year_overall_ended` int(11) DEFAULT NULL,
+13:  `year_overall_ended_uncertain` tinyint(1) NOT NULL,
+14:  `generic` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `year_began` (`year_began`),
+  KEY `deleted` (`deleted`),
+  KEY `year_began_uncertain` (`year_began_uncertain`),
+  KEY `year_ended_uncertain` (`year_ended_uncertain`),
+  KEY `gcd_brand_modified_5eff80882349f141_uniq` (`modified`),
+  KEY `gcd_brand_year_overall_began_ddc19cc8` (`year_overall_began`),
+  KEY `gcd_brand_year_overall_began_uncertain_31ef576d` (`year_overall_began_uncertain`),
+  KEY `gcd_brand_year_overall_ended_uncertain_e0e3902a` (`year_overall_ended_uncertain`)
+) ENGINE=InnoDB AUTO_INCREMENT=10047 DEFAULT CHARSET=utf8;
+
+Mem used: 35.12 MB
+CREATE TABLE `gcd_indicia_publisher` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `name` varchar(255) NOT NULL,
+2:  `parent_id` int(11) NOT NULL,
+3:  `country_id` int(11) NOT NULL,
+4:  `year_began` int(11) DEFAULT NULL,
+5:  `year_ended` int(11) DEFAULT NULL,
+6:  `is_surrogate` tinyint(1) NOT NULL DEFAULT '0',
+7:  `notes` longtext NOT NULL,
+8:  `url` varchar(255) NOT NULL,
+9:  `issue_count` int(11) NOT NULL DEFAULT '0',
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+10:  `deleted` tinyint(1) NOT NULL DEFAULT '0',
+11:  `year_began_uncertain` tinyint(1) NOT NULL DEFAULT '0',
+12:  `year_ended_uncertain` tinyint(1) NOT NULL DEFAULT '0',
+13:  `year_overall_began` int(11) DEFAULT NULL,
+14:  `year_overall_began_uncertain` tinyint(1) NOT NULL,
+15:  `year_overall_ended` int(11) DEFAULT NULL,
+16:  `year_overall_ended_uncertain` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `parent_id` (`parent_id`),
+  KEY `country_id` (`country_id`),
+  KEY `year_began` (`year_began`),
+  KEY `is_surrogate` (`is_surrogate`),
+  KEY `deleted` (`deleted`),
+  KEY `year_began_uncertain` (`year_began_uncertain`),
+  KEY `year_ended_uncertain` (`year_ended_uncertain`),
+  KEY `gcd_indicia_publisher_modified_43690202d96566e2_uniq` (`modified`),
+  KEY `gcd_indicia_publisher_year_overall_began_854f12bb` (`year_overall_began`),
+  KEY `gcd_indicia_publisher_year_overall_began_uncertain_d51c93af` (`year_overall_began_uncertain`),
+  KEY `gcd_indicia_publisher_year_overall_ended_uncertain_784b92eb` (`year_overall_ended_uncertain`),
+  CONSTRAINT `gcd_indicia_publisher_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `gcd_publisher` (`id`),
+  CONSTRAINT `gcd_indicia_publisher_ibfk_2` FOREIGN KEY (`country_id`) REFERENCES `stddata_country` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8334 DEFAULT CHARSET=utf8;
+
+Mem used: 35.19 MB
+CREATE TABLE `gcd_series` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `name` varchar(255) NOT NULL,
+2:  `sort_name` varchar(255) NOT NULL,
+3:  `format` varchar(255) NOT NULL DEFAULT '',
+4:  `year_began` int(11) NOT NULL,
+5:  `year_began_uncertain` tinyint(1) NOT NULL DEFAULT '0',
+6:  `year_ended` int(11) DEFAULT NULL,
+7:  `year_ended_uncertain` tinyint(1) NOT NULL DEFAULT '0',
+8:  `publication_dates` varchar(255) NOT NULL DEFAULT '',
+9:  `first_issue_id` int(11) DEFAULT NULL,
+10:  `last_issue_id` int(11) DEFAULT NULL,
+11:  `is_current` tinyint(1) NOT NULL DEFAULT '0',
+12:  `publisher_id` int(11) NOT NULL,
+13:  `country_id` int(11) NOT NULL,
+14:  `language_id` int(11) NOT NULL,
+15:  `tracking_notes` longtext NOT NULL,
+16:  `notes` longtext NOT NULL,
+17:  `has_gallery` tinyint(1) NOT NULL DEFAULT '0',
+18:  `issue_count` int(11) NOT NULL,
+  `created` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
+  `modified` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
+19:  `deleted` tinyint(1) NOT NULL DEFAULT '0',
+20:  `has_indicia_frequency` tinyint(1) NOT NULL DEFAULT '1',
+21:  `has_isbn` tinyint(1) NOT NULL DEFAULT '1',
+22:  `has_barcode` tinyint(1) NOT NULL DEFAULT '1',
+23:  `has_issue_title` tinyint(1) NOT NULL DEFAULT '0',
+24:  `has_volume` tinyint(1) NOT NULL DEFAULT '1',
+25:  `is_comics_publication` tinyint(1) NOT NULL DEFAULT '1',
+26:  `color` varchar(255) NOT NULL,
+27:  `dimensions` varchar(255) NOT NULL,
+28:  `paper_stock` varchar(255) NOT NULL,
+29:  `binding` varchar(255) NOT NULL,
+30:  `publishing_format` varchar(255) NOT NULL,
+31:  `has_rating` tinyint(1) NOT NULL,
+32:  `publication_type_id` int(11),
+33:  `is_singleton` tinyint(1) NOT NULL,
+34:  `has_about_comics` tinyint(1) NOT NULL,
+35:  `has_indicia_printer` tinyint(1) NOT NULL,
+36:  `has_publisher_code_number` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `PubID` (`publisher_id`),
+  KEY `Bk_Name` (`name`(150)),
+  KEY `Yr_Began` (`year_began`),
+  KEY `HasGallery` (`has_gallery`),
+  KEY `country_id` (`country_id`),
+  KEY `language_id` (`language_id`),
+  KEY `first_issue_id` (`first_issue_id`),
+  KEY `last_issue_id` (`last_issue_id`),
+  KEY `deleted` (`deleted`),
+  KEY `is_current` (`is_current`),
+  KEY `sort_name` (`sort_name`),
+  KEY `gcd_series_49a7a4e1` (`publication_type_id`),
+  KEY `gcd_series_modified_6085f750f3ffa284_uniq` (`modified`),
+  CONSTRAINT `gcd_series_ibfk_2` FOREIGN KEY (`publisher_id`) REFERENCES `gcd_publisher` (`id`),
+  CONSTRAINT `gcd_series_ibfk_3` FOREIGN KEY (`country_id`) REFERENCES `stddata_country` (`id`),
+  CONSTRAINT `gcd_series_ibfk_4` FOREIGN KEY (`language_id`) REFERENCES `stddata_language` (`id`),
+  CONSTRAINT `gcd_series_ibfk_5` FOREIGN KEY (`first_issue_id`) REFERENCES `gcd_issue` (`id`),
+  CONSTRAINT `gcd_series_ibfk_6` FOREIGN KEY (`last_issue_id`) REFERENCES `gcd_issue` (`id`),
+  CONSTRAINT `publication_type_id_refs_id_2c468df7974b9efa` FOREIGN KEY (`publication_type_id`) REFERENCES `gcd_series_publication_type` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=180772 DEFAULT CHARSET=utf8;
+
+Mem used: 35.41 MB
+CREATE TABLE `gcd_issue` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `number` varchar(50) NOT NULL,
+2:  `volume` varchar(50) NOT NULL DEFAULT '',
+3:  `no_volume` tinyint(1) NOT NULL DEFAULT '0',
+4:  `display_volume_with_number` tinyint(1) NOT NULL DEFAULT '0',
+5:  `series_id` int(11) NOT NULL,
+6:  `indicia_publisher_id` int(11) DEFAULT NULL,
+7:  `indicia_pub_not_printed` tinyint(1) NOT NULL,
+8:  `brand_id` int(11) DEFAULT NULL,
+9:  `no_brand` tinyint(1) NOT NULL,
+10:  `publication_date` varchar(255) NOT NULL,
+11:  `key_date` varchar(10) NOT NULL,
+12:  `sort_code` int(11) NOT NULL,
+13:  `price` varchar(255) NOT NULL,
+14:  `page_count` decimal(10,3) DEFAULT NULL,
+15:  `page_count_uncertain` tinyint(1) NOT NULL DEFAULT '0',
+16:  `indicia_frequency` varchar(255) NOT NULL DEFAULT '',
+17:  `no_indicia_frequency` tinyint(1) NOT NULL DEFAULT '0',
+18:  `editing` longtext NOT NULL,
+19:  `no_editing` tinyint(1) NOT NULL DEFAULT '0',
+20:  `notes` longtext NOT NULL,
+  `created` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
+  `modified` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
+21:  `deleted` tinyint(1) NOT NULL DEFAULT '0',
+22:  `is_indexed` tinyint(1) NOT NULL DEFAULT '0',
+23:  `isbn` varchar(32) NOT NULL DEFAULT '',
+24:  `valid_isbn` varchar(13) NOT NULL DEFAULT '',
+25:  `no_isbn` tinyint(1) NOT NULL DEFAULT '0',
+26:  `variant_of_id` int(11) DEFAULT NULL,
+27:  `variant_name` varchar(255) NOT NULL DEFAULT '',
+28:  `barcode` varchar(38) NOT NULL DEFAULT '',
+29:  `no_barcode` tinyint(1) NOT NULL DEFAULT '0',
+30:  `title` varchar(255) NOT NULL DEFAULT '',
+31:  `no_title` tinyint(1) NOT NULL DEFAULT '0',
+32:  `on_sale_date` varchar(10) NOT NULL,
+33:  `on_sale_date_uncertain` tinyint(1) NOT NULL DEFAULT '0',
+34:  `rating` varchar(255) NOT NULL,
+35:  `no_rating` tinyint(1) NOT NULL,
+36:  `volume_not_printed` tinyint(1) NOT NULL,
+37:  `no_indicia_printer` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `series_id_sort_code` (`series_id`,`sort_code`),
+  KEY `SeriesID` (`series_id`),
+  KEY `Key_Date` (`key_date`),
+  KEY `Issue` (`number`),
+  KEY `VolumeNum` (`volume`),
+  KEY `Modified` (`modified`),
+  KEY `no_volume` (`no_volume`),
+  KEY `display_volume_with_number` (`display_volume_with_number`),
+  KEY `indicia_publisher_id` (`indicia_publisher_id`),
+  KEY `brand_id` (`brand_id`),
+  KEY `no_editing` (`no_editing`),
+  KEY `sort_code` (`sort_code`),
+  KEY `no_brand` (`no_brand`),
+  KEY `deleted` (`deleted`),
+  KEY `is_indexed` (`is_indexed`),
+  KEY `isbn` (`isbn`),
+  KEY `valid_isbn` (`valid_isbn`),
+  KEY `no_indicia_frequency` (`no_indicia_frequency`),
+  KEY `no_isbn` (`no_isbn`),
+  KEY `title` (`title`),
+  KEY `variant_of_id` (`variant_of_id`),
+  KEY `barcode` (`barcode`),
+  KEY `on_sale_date` (`on_sale_date`),
+  KEY `no_title` (`no_title`),
+  KEY `gcd_issue_1a619ca6` (`rating`),
+  KEY `gcd_issue_ed4c6b73` (`no_rating`),
+  CONSTRAINT `gcd_issue_ibfk_1` FOREIGN KEY (`series_id`) REFERENCES `gcd_series` (`id`),
+  CONSTRAINT `gcd_issue_ibfk_2` FOREIGN KEY (`indicia_publisher_id`) REFERENCES `gcd_indicia_publisher` (`id`),
+  CONSTRAINT `gcd_issue_ibfk_3` FOREIGN KEY (`brand_id`) REFERENCES `gcd_brand` (`id`),
+  CONSTRAINT `gcd_issue_ibfk_4` FOREIGN KEY (`variant_of_id`) REFERENCES `gcd_issue` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2305200 DEFAULT CHARSET=utf8;
+
+Mem used: 36.62 MB
+CREATE TABLE `gcd_story` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `title` varchar(255) NOT NULL DEFAULT '',
+2:  `title_inferred` tinyint(1) NOT NULL DEFAULT '0',
+3:  `feature` varchar(255) NOT NULL,
+4:  `sequence_number` int(11) NOT NULL,
+5:  `page_count` decimal(10,3) DEFAULT NULL,
+6:  `issue_id` int(11) NOT NULL,
+7:  `script` longtext NOT NULL,
+8:  `pencils` longtext NOT NULL,
+9:  `inks` longtext NOT NULL,
+10:  `colors` longtext NOT NULL,
+11:  `letters` longtext NOT NULL,
+12:  `editing` longtext NOT NULL,
+13:  `genre` varchar(255) NOT NULL DEFAULT '',
+14:  `characters` longtext NOT NULL,
+15:  `synopsis` longtext NOT NULL,
+16:  `reprint_notes` longtext NOT NULL,
+  `created` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
+  `modified` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
+17:  `notes` longtext NOT NULL,
+18:  `no_script` tinyint(1) NOT NULL DEFAULT '0',
+19:  `no_pencils` tinyint(1) NOT NULL DEFAULT '0',
+20:  `no_inks` tinyint(1) NOT NULL DEFAULT '0',
+21:  `no_colors` tinyint(1) NOT NULL DEFAULT '0',
+22:  `no_letters` tinyint(1) NOT NULL DEFAULT '0',
+23:  `no_editing` tinyint(1) NOT NULL DEFAULT '0',
+24:  `page_count_uncertain` tinyint(1) NOT NULL DEFAULT '0',
+25:  `type_id` int(11) NOT NULL,
+26:  `job_number` varchar(25) NOT NULL DEFAULT '',
+27:  `deleted` tinyint(1) NOT NULL DEFAULT '0',
+28:  `first_line` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IssueID` (`issue_id`),
+  KEY `Modified` (`modified`),
+  KEY `no_script` (`no_script`),
+  KEY `no_pencils` (`no_pencils`),
+  KEY `no_inks` (`no_inks`),
+  KEY `no_colors` (`no_colors`),
+  KEY `no_letters` (`no_letters`),
+  KEY `page_count_uncertain` (`page_count_uncertain`),
+  KEY `Pg_Cnt` (`page_count`),
+  KEY `no_editing` (`no_editing`),
+  KEY `type_id` (`type_id`),
+  KEY `deleted` (`deleted`),
+  KEY `title_inferred` (`title_inferred`),
+  CONSTRAINT `gcd_story_ibfk_1` FOREIGN KEY (`issue_id`) REFERENCES `gcd_issue` (`id`),
+  CONSTRAINT `gcd_story_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `gcd_story_type` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3381784 DEFAULT CHARSET=utf8;
+
+Mem used: 36.84 MB
+CREATE TABLE `gcd_story_credit` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created` datetime(6) NOT NULL,
+  `modified` datetime(6) NOT NULL,
+1:  `deleted` tinyint(1) NOT NULL,
+2:  `is_credited` tinyint(1) NOT NULL,
+3:  `is_signed` tinyint(1) NOT NULL,
+4:  `uncertain` tinyint(1) NOT NULL,
+5:  `signed_as` varchar(255) NOT NULL,
+6:  `credited_as` varchar(255) NOT NULL,
+7:  `credit_name` varchar(255) NOT NULL,
+8:  `creator_id` int(11) NOT NULL,
+9:  `credit_type_id` int(11) NOT NULL,
+10:  `story_id` int(11) NOT NULL,
+11:  `signature_id` int(11) DEFAULT NULL,
+12:  `is_sourced` tinyint(1) NOT NULL,
+13:  `sourced_by` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_story_credit_creator_id_7c632a78_fk_gcd_creat` (`creator_id`),
+  KEY `gcd_story_credit_credit_type_id_2b1eda8a_fk_gcd_credit_type_id` (`credit_type_id`),
+  KEY `gcd_story_credit_story_id_7b35c2b5_fk_gcd_story_id` (`story_id`),
+  KEY `gcd_story_credit_modified_1b831920` (`modified`),
+  KEY `gcd_story_credit_deleted_5f31a0d2` (`deleted`),
+  KEY `gcd_story_credit_is_credited_a0f3090d` (`is_credited`),
+  KEY `gcd_story_credit_is_signed_da26e307` (`is_signed`),
+  KEY `gcd_story_credit_uncertain_1a69a71c` (`uncertain`),
+  KEY `gcd_story_credit_signature_id_0c4a25cd_fk_gcd_creat` (`signature_id`),
+  KEY `gcd_story_credit_is_sourced_b8200d3b` (`is_sourced`),
+  CONSTRAINT `gcd_story_credit_creator_id_7c632a78_fk_gcd_creat` FOREIGN KEY (`creator_id`) REFERENCES `gcd_creator_name_detail` (`id`),
+  CONSTRAINT `gcd_story_credit_credit_type_id_2b1eda8a_fk_gcd_credit_type_id` FOREIGN KEY (`credit_type_id`) REFERENCES `gcd_credit_type` (`id`),
+  CONSTRAINT `gcd_story_credit_signature_id_0c4a25cd_fk_gcd_creat` FOREIGN KEY (`signature_id`) REFERENCES `gcd_creator_signature` (`id`),
+  CONSTRAINT `gcd_story_credit_story_id_7b35c2b5_fk_gcd_story_id` FOREIGN KEY (`story_id`) REFERENCES `gcd_story` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3322581 DEFAULT CHARSET=utf8;
+
+Mem used: 36.14 MB
+CREATE TABLE `gcd_feature` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created` datetime(6) NOT NULL,
+  `modified` datetime(6) NOT NULL,
+1:  `deleted` tinyint(1) NOT NULL,
+2:  `name` varchar(255) NOT NULL,
+3:  `sort_name` varchar(255) NOT NULL,
+4:  `genre` varchar(255) NOT NULL,
+5:  `year_created` int(11) DEFAULT NULL,
+6:  `year_created_uncertain` tinyint(1) NOT NULL,
+7:  `notes` longtext NOT NULL,
+8:  `feature_type_id` int(11) NOT NULL,
+9:  `language_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_feature_modified_dc767107` (`modified`),
+  KEY `gcd_feature_deleted_d2842928` (`deleted`),
+  KEY `gcd_feature_name_1b482a02` (`name`),
+  KEY `gcd_feature_sort_name_aa22b333` (`sort_name`),
+  KEY `gcd_feature_year_created_d3f06615` (`year_created`),
+  KEY `gcd_feature_feature_type_id_0bd38e4d_fk_gcd_feature_type_id` (`feature_type_id`),
+  KEY `gcd_feature_language_id_f6ca9801_fk_stddata_language_id` (`language_id`),
+  CONSTRAINT `gcd_feature_feature_type_id_0bd38e4d_fk_gcd_feature_type_id` FOREIGN KEY (`feature_type_id`) REFERENCES `gcd_feature_type` (`id`),
+  CONSTRAINT `gcd_feature_language_id_f6ca9801_fk_stddata_language_id` FOREIGN KEY (`language_id`) REFERENCES `stddata_language` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19407 DEFAULT CHARSET=utf8;
+
+Mem used: 35.98 MB
+CREATE TABLE `gcd_award` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL,
+  `created` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `modified` datetime NOT NULL,
+  `notes` longtext NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_award_da602f0b` (`deleted`),
+  KEY `gcd_award_9ae73c65` (`modified`)
+) ENGINE=InnoDB AUTO_INCREMENT=324 DEFAULT CHARSET=utf8;
+
+Mem used: 36.72 MB
+CREATE TABLE `gcd_received_award` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created` datetime(6) NOT NULL,
+  `modified` datetime(6) NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `object_id` int(10) unsigned DEFAULT NULL,
+  `award_name` varchar(255) NOT NULL,
+  `no_award_name` tinyint(1) NOT NULL,
+  `award_year` smallint(5) unsigned DEFAULT NULL,
+  `award_year_uncertain` tinyint(1) NOT NULL,
+  `notes` longtext NOT NULL,
+  `award_id` int(11) DEFAULT NULL,
+  `content_type_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_received_award_award_id_a1daee53_fk_gcd_award_id` (`award_id`),
+  KEY `gcd_received_award_content_type_id_76c10020_fk_django_co` (`content_type_id`),
+  KEY `gcd_received_award_modified_dfc45335` (`modified`),
+  KEY `gcd_received_award_deleted_db659429` (`deleted`),
+  CONSTRAINT `gcd_received_award_award_id_a1daee53_fk_gcd_award_id` FOREIGN KEY (`award_id`) REFERENCES `gcd_award` (`id`),
+  CONSTRAINT `gcd_received_award_content_type_id_76c10020_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11594 DEFAULT CHARSET=utf8;
+
+Mem used: 36.66 MB
+CREATE TABLE `gcd_creator` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `gcd_official_name` varchar(255) NOT NULL,
+2:  `whos_who` varchar(200) DEFAULT NULL,
+3:  `birth_country_uncertain` tinyint(1) NOT NULL,
+4:  `birth_province` varchar(50) NOT NULL,
+5:  `birth_province_uncertain` tinyint(1) NOT NULL,
+6:  `birth_city` varchar(200) NOT NULL,
+7:  `birth_city_uncertain` tinyint(1) NOT NULL,
+8:  `death_country_uncertain` tinyint(1) NOT NULL,
+9:  `death_province` varchar(50) NOT NULL,
+10:  `death_province_uncertain` tinyint(1) NOT NULL,
+11:  `death_city` varchar(200) NOT NULL,
+12:  `death_city_uncertain` tinyint(1) NOT NULL,
+13:  `bio` longtext NOT NULL,
+14:  `notes` longtext NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+15:  `deleted` tinyint(1) NOT NULL,
+16:  `birth_country_id` int(11) DEFAULT NULL,
+17:  `birth_date_id` int(11) DEFAULT NULL,
+18:  `death_country_id` int(11),
+19:  `death_date_id` int(11),
+20:  `sort_name` varchar(255) NOT NULL,
+21:  `disambiguation` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_creator_1ea4c9b1` (`gcd_official_name`),
+  KEY `gcd_creator_da602f0b` (`deleted`),
+  KEY `gcd_creator_84c1a583` (`birth_country_id`),
+  KEY `gcd_creator_658bab16` (`birth_date_id`),
+  KEY `gcd_creator_388fb40a` (`death_country_id`),
+  KEY `gcd_creator_d8bf1a9c` (`death_date_id`),
+  KEY `gcd_creator_modified_5920a4f3544476a0_uniq` (`modified`),
+  KEY `gcd_creator_sort_name_80a1e4ff` (`sort_name`),
+  KEY `gcd_creator_disambiguation_21a5e71c` (`disambiguation`),
+  CONSTRAINT `gcd_crea_birth_country_id_763042865119b661_fk_stddata_country_id` FOREIGN KEY (`birth_country_id`) REFERENCES `stddata_country` (`id`),
+  CONSTRAINT `gcd_crea_death_country_id_564f5820f21e9ede_fk_stddata_country_id` FOREIGN KEY (`death_country_id`) REFERENCES `stddata_country` (`id`),
+  CONSTRAINT `gcd_creator_birth_date_id_78325325e7e05e56_fk_stddata_date_id` FOREIGN KEY (`birth_date_id`) REFERENCES `stddata_date` (`id`),
+  CONSTRAINT `gcd_creator_death_date_id_192a573e76c2f1cd_fk_stddata_date_id` FOREIGN KEY (`death_date_id`) REFERENCES `stddata_date` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=54323 DEFAULT CHARSET=utf8;
+
+Mem used: 36.43 MB
+CREATE TABLE `gcd_creator_art_influence` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `influence_name` varchar(200) NOT NULL,
+  `notes` longtext NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `creator_id` int(11) NOT NULL,
+  `influence_link_id` int(11),
+  PRIMARY KEY (`id`),
+  KEY `gcd_creator_art_influence_da602f0b` (`deleted`),
+  KEY `gcd_creator_art_influence_3700153c` (`creator_id`),
+  KEY `gcd_creator_art_influence_ea572c03` (`influence_link_id`),
+  KEY `gcd_creator_art_influence_modified_1c0f19408432804c_uniq` (`modified`),
+  CONSTRAINT `gcd_creator_art_infl_influence_link_id_7ffc0a72_fk_gcd_creat` FOREIGN KEY (`influence_link_id`) REFERENCES `gcd_creator` (`id`),
+  CONSTRAINT `gcd_creator_art_influence_creator_id_af97901f_fk_gcd_creator_id` FOREIGN KEY (`creator_id`) REFERENCES `gcd_creator` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2841 DEFAULT CHARSET=utf8;
+
+Mem used: 35.68 MB
+CREATE TABLE `gcd_creator_degree` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `degree_year` smallint(5) unsigned DEFAULT NULL,
+  `degree_year_uncertain` tinyint(1) NOT NULL,
+  `notes` longtext NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `creator_id` int(11) NOT NULL,
+  `degree_id` int(11) NOT NULL,
+  `school_id` int(11),
+  PRIMARY KEY (`id`),
+  KEY `gcd_creator_degree_da602f0b` (`deleted`),
+  KEY `gcd_creator_degree_3700153c` (`creator_id`),
+  KEY `gcd_creator_degree_0e798d2a` (`degree_id`),
+  KEY `gcd_creator_degree_5fc7164b` (`school_id`),
+  KEY `gcd_creator_degree_modified_36c3bd276c240964_uniq` (`modified`),
+  CONSTRAINT `gcd_creator_degree_creator_id_2d1a7e1b51ae365d_fk_gcd_creator_id` FOREIGN KEY (`creator_id`) REFERENCES `gcd_creator` (`id`),
+  CONSTRAINT `gcd_creator_degree_degree_id_25975d216f588700_fk_gcd_degree_id` FOREIGN KEY (`degree_id`) REFERENCES `gcd_degree` (`id`),
+  CONSTRAINT `gcd_creator_degree_school_id_34e8b4f567e05b8c_fk_gcd_school_id` FOREIGN KEY (`school_id`) REFERENCES `gcd_school` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=444 DEFAULT CHARSET=utf8;
+
+Mem used: 35.55 MB
+CREATE TABLE `gcd_creator_membership` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `organization_name` varchar(200) NOT NULL,
+  `membership_year_began` smallint(5) unsigned DEFAULT NULL,
+  `membership_year_began_uncertain` tinyint(1) NOT NULL,
+  `membership_year_ended` smallint(5) unsigned DEFAULT NULL,
+  `membership_year_ended_uncertain` tinyint(1) NOT NULL,
+  `notes` longtext NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `creator_id` int(11) NOT NULL,
+  `membership_type_id` int(11),
+  PRIMARY KEY (`id`),
+  KEY `gcd_creator_membership_da602f0b` (`deleted`),
+  KEY `gcd_creator_membership_3700153c` (`creator_id`),
+  KEY `gcd_creator_membership_f0ca3e55` (`membership_type_id`),
+  KEY `gcd_creator_membership_modified_37ffa94043c9f144_uniq` (`modified`),
+  CONSTRAINT `gc_membership_type_id_214046281e0da56a_fk_gcd_membership_type_id` FOREIGN KEY (`membership_type_id`) REFERENCES `gcd_membership_type` (`id`),
+  CONSTRAINT `gcd_creator_member_creator_id_4ed99850c0c56535_fk_gcd_creator_id` FOREIGN KEY (`creator_id`) REFERENCES `gcd_creator` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=447 DEFAULT CHARSET=utf8;
+
+Mem used: 35.64 MB
+CREATE TABLE `gcd_creator_name_detail` (
+0:  `id` int(11) NOT NULL AUTO_INCREMENT,
+1:  `name` varchar(255) NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+2:  `deleted` tinyint(1) NOT NULL,
+3:  `creator_id` int(11) NOT NULL,
+4:  `type_id` int(11),
+5:  `sort_name` varchar(255) NOT NULL,
+6:  `is_official_name` tinyint(1) NOT NULL,
+7:  `in_script_id` int(11) NOT NULL,
+8:  `family_name` varchar(255) NOT NULL,
+9:  `given_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_creator_name_detail_b068931c` (`name`),
+  KEY `gcd_creator_name_detail_da602f0b` (`deleted`),
+  KEY `gcd_creator_name_detail_3700153c` (`creator_id`),
+  KEY `gcd_creator_name_detail_94757cae` (`type_id`),
+  KEY `gcd_creator_name_detail_modified_1bc0d6e170b913fe_uniq` (`modified`),
+  KEY `gcd_creator_name_detail_sort_name_f7d3caa6` (`sort_name`),
+  KEY `gcd_creator_name_det_in_script_id_b7560492_fk_stddata_s` (`in_script_id`),
+  KEY `gcd_creator_name_detail_family_name_e81f34f4` (`family_name`),
+  KEY `gcd_creator_name_detail_given_name_6706c242` (`given_name`),
+  CONSTRAINT `gcd_creator_name_d_creator_id_6fb7edba0f224837_fk_gcd_creator_id` FOREIGN KEY (`creator_id`) REFERENCES `gcd_creator` (`id`),
+  CONSTRAINT `gcd_creator_name_det_in_script_id_b7560492_fk_stddata_s` FOREIGN KEY (`in_script_id`) REFERENCES `stddata_script` (`id`),
+  CONSTRAINT `gcd_creator_name_detail_type_id_cce05647_fk_gcd_name_type_id` FOREIGN KEY (`type_id`) REFERENCES `gcd_name_type` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=87785 DEFAULT CHARSET=utf8;
+
+Mem used: 36.13 MB
+CREATE TABLE `gcd_creator_non_comic_work` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `publication_title` varchar(200) NOT NULL,
+  `employer_name` varchar(200) NOT NULL,
+  `work_title` varchar(255) NOT NULL,
+  `work_urls` longtext NOT NULL,
+  `notes` longtext NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `creator_id` int(11) NOT NULL,
+  `work_role_id` int(11),
+  `work_type_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_creator_non_comic_work_da602f0b` (`deleted`),
+  KEY `gcd_creator_non_comic_work_3700153c` (`creator_id`),
+  KEY `gcd_creator_non_comic_work_1fd7e1a2` (`work_role_id`),
+  KEY `gcd_creator_non_comic_work_333f9095` (`work_type_id`),
+  KEY `gcd_creator_non_comic_work_modified_1ea7d996ae050445_uniq` (`modified`),
+  CONSTRAINT `gcd__work_type_id_3bc189b3f6be8a38_fk_gcd_non_comic_work_type_id` FOREIGN KEY (`work_type_id`) REFERENCES `gcd_non_comic_work_type` (`id`),
+  CONSTRAINT `gcd_c_work_role_id_98df94d341f6000_fk_gcd_non_comic_work_role_id` FOREIGN KEY (`work_role_id`) REFERENCES `gcd_non_comic_work_role` (`id`),
+  CONSTRAINT `gcd_creator_non_co_creator_id_2bf5eba03c4340b4_fk_gcd_creator_id` FOREIGN KEY (`creator_id`) REFERENCES `gcd_creator` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2903 DEFAULT CHARSET=utf8;
+
+Mem used: 36.36 MB
+CREATE TABLE `gcd_creator_relation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `notes` longtext NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `from_creator_id` int(11) NOT NULL,
+  `relation_type_id` int(11) NOT NULL,
+  `to_creator_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_creator_relation_da602f0b` (`deleted`),
+  KEY `gcd_creator_relation_1d58baf1` (`from_creator_id`),
+  KEY `gcd_creator_relation_5f290fb5` (`relation_type_id`),
+  KEY `gcd_creator_relation_6821265c` (`to_creator_id`),
+  KEY `gcd_creator_relation_modified_4c3574d61a89568e_uniq` (`modified`),
+  CONSTRAINT `gcd_cr_relation_type_id_6b325352f7711cf6_fk_gcd_relation_type_id` FOREIGN KEY (`relation_type_id`) REFERENCES `gcd_relation_type` (`id`),
+  CONSTRAINT `gcd_creator_re_from_creator_id_12353b87e0ffa85_fk_gcd_creator_id` FOREIGN KEY (`from_creator_id`) REFERENCES `gcd_creator` (`id`),
+  CONSTRAINT `gcd_creator_rel_to_creator_id_5893caf404626fdc_fk_gcd_creator_id` FOREIGN KEY (`to_creator_id`) REFERENCES `gcd_creator` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2894 DEFAULT CHARSET=utf8;
+
+Mem used: 36.34 MB
+CREATE TABLE `gcd_creator_school` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `school_year_began` smallint(5) unsigned DEFAULT NULL,
+  `school_year_began_uncertain` tinyint(1) NOT NULL,
+  `school_year_ended` smallint(5) unsigned DEFAULT NULL,
+  `school_year_ended_uncertain` tinyint(1) NOT NULL,
+  `notes` longtext NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `creator_id` int(11) NOT NULL,
+  `school_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_creator_school_da602f0b` (`deleted`),
+  KEY `gcd_creator_school_3700153c` (`creator_id`),
+  KEY `gcd_creator_school_5fc7164b` (`school_id`),
+  KEY `gcd_creator_school_modified_452d6d27a108110_uniq` (`modified`),
+  CONSTRAINT `gcd_creator_school_creator_id_2525d2f8e697f937_fk_gcd_creator_id` FOREIGN KEY (`creator_id`) REFERENCES `gcd_creator` (`id`),
+  CONSTRAINT `gcd_creator_school_school_id_532eb68322363260_fk_gcd_school_id` FOREIGN KEY (`school_id`) REFERENCES `gcd_school` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2164 DEFAULT CHARSET=utf8;
+
+Mem used: 35.75 MB
+CREATE TABLE `gcd_feature_logo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created` datetime(6) NOT NULL,
+  `modified` datetime(6) NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `sort_name` varchar(255) NOT NULL,
+  `year_began` int(11) DEFAULT NULL,
+  `year_ended` int(11) DEFAULT NULL,
+  `year_began_uncertain` tinyint(1) NOT NULL,
+  `year_ended_uncertain` tinyint(1) NOT NULL,
+  `notes` longtext NOT NULL,
+  `generic` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_feature_logo_modified_a01588f8` (`modified`),
+  KEY `gcd_feature_logo_deleted_7fc639e5` (`deleted`),
+  KEY `gcd_feature_logo_name_fca0238c` (`name`),
+  KEY `gcd_feature_logo_sort_name_fc35812c` (`sort_name`),
+  KEY `gcd_feature_logo_year_began_e62b6676` (`year_began`)
+) ENGINE=InnoDB AUTO_INCREMENT=3924 DEFAULT CHARSET=utf8;
+
+Mem used: 35.94 MB
+CREATE TABLE `gcd_indicia_printer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created` datetime(6) NOT NULL,
+  `modified` datetime(6) NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `year_began` int(11) DEFAULT NULL,
+  `year_ended` int(11) DEFAULT NULL,
+  `year_began_uncertain` tinyint(1) NOT NULL,
+  `year_ended_uncertain` tinyint(1) NOT NULL,
+  `year_overall_began` int(11) DEFAULT NULL,
+  `year_overall_ended` int(11) DEFAULT NULL,
+  `year_overall_began_uncertain` tinyint(1) NOT NULL,
+  `year_overall_ended_uncertain` tinyint(1) NOT NULL,
+  `notes` longtext NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `issue_count` int(11) NOT NULL,
+  `country_id` int(11) NOT NULL,
+  `parent_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_indicia_printer_country_id_7721a445_fk_stddata_country_id` (`country_id`),
+  KEY `gcd_indicia_printer_parent_id_530af9b7_fk_gcd_printer_id` (`parent_id`),
+  KEY `gcd_indicia_printer_modified_778425fb` (`modified`),
+  KEY `gcd_indicia_printer_deleted_7a641d17` (`deleted`),
+  KEY `gcd_indicia_printer_name_2aca0f76` (`name`),
+  KEY `gcd_indicia_printer_year_began_c96ca6c5` (`year_began`),
+  KEY `gcd_indicia_printer_year_began_uncertain_0bd7f023` (`year_began_uncertain`),
+  KEY `gcd_indicia_printer_year_ended_uncertain_efe8024d` (`year_ended_uncertain`),
+  KEY `gcd_indicia_printer_year_overall_began_0ef47eac` (`year_overall_began`),
+  KEY `gcd_indicia_printer_year_overall_began_uncertain_c73e8a3a` (`year_overall_began_uncertain`),
+  KEY `gcd_indicia_printer_year_overall_ended_uncertain_1f5b498c` (`year_overall_ended_uncertain`),
+  CONSTRAINT `gcd_indicia_printer_country_id_7721a445_fk_stddata_country_id` FOREIGN KEY (`country_id`) REFERENCES `stddata_country` (`id`),
+  CONSTRAINT `gcd_indicia_printer_parent_id_530af9b7_fk_gcd_printer_id` FOREIGN KEY (`parent_id`) REFERENCES `gcd_printer` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=701 DEFAULT CHARSET=utf8;
+
+Mem used: 36.32 MB
+CREATE TABLE `gcd_issue_credit` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created` datetime(6) NOT NULL,
+  `modified` datetime(6) NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `is_credited` tinyint(1) NOT NULL,
+  `uncertain` tinyint(1) NOT NULL,
+  `credited_as` varchar(255) NOT NULL,
+  `credit_name` varchar(255) NOT NULL,
+  `creator_id` int(11) NOT NULL,
+  `credit_type_id` int(11) NOT NULL,
+  `issue_id` int(11) NOT NULL,
+  `is_sourced` tinyint(1) NOT NULL,
+  `sourced_by` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_issue_credit_creator_id_d23239af_fk_gcd_creat` (`creator_id`),
+  KEY `gcd_issue_credit_credit_type_id_85428160_fk_gcd_credit_type_id` (`credit_type_id`),
+  KEY `gcd_issue_credit_issue_id_928f51d6_fk_gcd_issue_id` (`issue_id`),
+  KEY `gcd_issue_credit_modified_92c90a4b` (`modified`),
+  KEY `gcd_issue_credit_deleted_28f591fc` (`deleted`),
+  KEY `gcd_issue_credit_is_credited_448cd70d` (`is_credited`),
+  KEY `gcd_issue_credit_uncertain_a122bed6` (`uncertain`),
+  KEY `gcd_issue_credit_is_sourced_f6bb6c2c` (`is_sourced`),
+  CONSTRAINT `gcd_issue_credit_creator_id_d23239af_fk_gcd_creat` FOREIGN KEY (`creator_id`) REFERENCES `gcd_creator_name_detail` (`id`),
+  CONSTRAINT `gcd_issue_credit_credit_type_id_85428160_fk_gcd_credit_type_id` FOREIGN KEY (`credit_type_id`) REFERENCES `gcd_credit_type` (`id`),
+  CONSTRAINT `gcd_issue_credit_issue_id_928f51d6_fk_gcd_issue_id` FOREIGN KEY (`issue_id`) REFERENCES `gcd_issue` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=192139 DEFAULT CHARSET=utf8;
+
+Mem used: 36.66 MB
+CREATE TABLE `gcd_printer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created` datetime(6) NOT NULL,
+  `modified` datetime(6) NOT NULL,
+  `deleted` tinyint(1) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `year_began` int(11) DEFAULT NULL,
+  `year_ended` int(11) DEFAULT NULL,
+  `year_began_uncertain` tinyint(1) NOT NULL,
+  `year_ended_uncertain` tinyint(1) NOT NULL,
+  `year_overall_began` int(11) DEFAULT NULL,
+  `year_overall_ended` int(11) DEFAULT NULL,
+  `year_overall_began_uncertain` tinyint(1) NOT NULL,
+  `year_overall_ended_uncertain` tinyint(1) NOT NULL,
+  `notes` longtext NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `indicia_printer_count` int(11) NOT NULL,
+  `issue_count` int(11) NOT NULL,
+  `country_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gcd_printer_country_id_889421fa_fk_stddata_country_id` (`country_id`),
+  KEY `gcd_printer_modified_f0a0e321` (`modified`),
+  KEY `gcd_printer_deleted_3b0b11ef` (`deleted`),
+  KEY `gcd_printer_name_97854c5f` (`name`),
+  KEY `gcd_printer_year_began_9471a3eb` (`year_began`),
+  KEY `gcd_printer_year_began_uncertain_0b919273` (`year_began_uncertain`),
+  KEY `gcd_printer_year_ended_uncertain_ff75a9b0` (`year_ended_uncertain`),
+  KEY `gcd_printer_year_overall_began_3ba498cd` (`year_overall_began`),
+  KEY `gcd_printer_year_overall_began_uncertain_4225255a` (`year_overall_began_uncertain`),
+  KEY `gcd_printer_year_overall_ended_uncertain_5e639616` (`year_overall_ended_uncertain`),
+  KEY `gcd_printer_indicia_printer_count_c38d8965` (`indicia_printer_count`),
+  CONSTRAINT `gcd_printer_country_id_889421fa_fk_stddata_country_id` FOREIGN KEY (`country_id`) REFERENCES `stddata_country` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=422 DEFAULT CHARSET=utf8;
+
+
+Process finished with exit code 0
